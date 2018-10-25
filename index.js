@@ -1,3 +1,45 @@
+var RelationshipSearch = {
+	inheritAttrs: false,
+	props: {
+		search: Boolean
+	},
+	data() {
+		return {
+			query: null
+		};
+	},
+	methods: {
+		onInput() {
+			//this.$emit("input", this.selected);
+		}
+	},
+	template: `
+		<k-input v-model="query" @input="onInput()" theme="field" type="text" spellcheck="false" icon="search" />
+	`
+}
+
+var RelationshipListbox = {
+	inheritAttrs: false,
+	props: {
+		search: Boolean
+	},
+	data() {
+		return {
+			query: null
+		};
+	},
+	methods: {
+		onInput() {
+			//this.$emit("input", this.selected);
+		}
+	},
+	template: `
+		<component is="ul">
+			<p>ul</p>
+		</component>
+	`
+}
+
 panel.plugin('olach/relationship', {
 	fields: {
 		relationship: {
@@ -9,6 +51,10 @@ panel.plugin('olach/relationship', {
 				options: Array,
 				search: Boolean,
 				value: Array,
+			},
+			components: {
+				'relationship-search': RelationshipSearch,
+				'relationship-listbox': RelationshipListbox
 			},
 			methods: {
 				addItem: function (item) {
@@ -56,8 +102,10 @@ panel.plugin('olach/relationship', {
 			template: `
 				<k-field class="kirby-relationship-field" v-bind="$props">
 					<div class="relationship-search" v-if="search">
-						<k-input v-model="query" @input="onInput()" theme="field" type="text" spellcheck="false" icon="search" />
+						<relationship-search />
 					</div>
+					
+					<relationship-listbox />
 					
 					<div class="relationship-lists">							
 						<ul
