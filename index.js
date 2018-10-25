@@ -37,6 +37,9 @@ panel.plugin('olach/relationship', {
 				index(theitem) {
 					return this.value.findIndex(item => item.value === theitem.value);
 				},
+				onInput() {
+					this.$emit("input", this.selected);
+				}
 			},
 			computed: {
 				selected: function () {
@@ -53,7 +56,7 @@ panel.plugin('olach/relationship', {
 			template: `
 				<k-field class="kirby-relationship-field" v-bind="$props">
 					<div class="relationship-search" v-if="search">
-						<k-input v-model="query" theme="field" type="text" spellcheck="false" icon="search" />
+						<k-input v-model="query" @input="onInput()" theme="field" type="text" spellcheck="false" icon="search" />
 					</div>
 					
 					<div class="relationship-lists">							
