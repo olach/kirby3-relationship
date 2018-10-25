@@ -52,71 +52,64 @@ panel.plugin('olach/relationship', {
 			},
 			template: `
 				<k-field class="kirby-relationship-field" v-bind="$props">
-					<k-input v-model="query" theme="field" type="text" icon="search" />
+					<div class="relationship-search" v-if="search">
+						<k-input v-model="query" theme="field" type="text" spellcheck="false" icon="search" />
+					</div>
 					
-					<div class="relationship-field">
-						<div class="relationship-search" v-if="search">
-							<k-input theme="field">
-								<k-icon :type="'search'" slot="before" />
-								<k-text-input class="input" type="text" role="search" autocomplete="off" />
-							</k-input>
-						</div>
+					<div class="relationship-lists">							
+						<ul
+							class="relationship-list relationship-list--available"
+							aria-activedescendant=""
+							aria-label=""
+							aria-multiselectable="true"
+							role="listbox"
+							tabindex="0"
+							@focus="isInFocus"
+							@blur="isBlurred"
+							@keydown.down="keyDown"
+							@keydown="key"
+						>
+							<li
+								v-for="(item, index) in options"
+								:id="'relationship_' + _uid + '_available_' + item.value"
+								class=""
+								role="option"
+								data-key=""
+								data-search-index=""
+								@click="addItem(item)"
+							>
+								<span class="relationship-item-label">{{item.text}}</span>
+								<button class="relationship-item-add" tabindex="-1" type="button">
+									<k-icon :type="'add'" />
+								</button>
+							</li>
+						</ul>
 						
-						<div class="relationship-lists">							
-							<ul
-								class="relationship-list relationship-list--available"
-								aria-activedescendant=""
-								aria-label=""
-								aria-multiselectable="true"
-								role="listbox"
-								tabindex="0"
-								@focus="isInFocus"
-								@blur="isBlurred"
-								@keydown.down="keyDown"
-								@keydown="key"
+						<ol
+							class="relationship-list relationship-list--selected"
+							data-sortable="true"
+							data-deletable="true"
+							aria-activedescendant=""
+							aria-label=""
+							role="listbox"
+							tabindex="0"
+						>
+							<li
+								v-for="(item, index) in value"
+								:id="'relationship_' + _uid + '_selected_' + item.value"
+								role="option"
+								data-key=""
+								aria-selected=""
+								@click="removeItem(item)"
 							>
-								<li
-									v-for="(item, index) in options"
-									:id="'relationship_' + _uid + '_available_' + item.value"
-									class=""
-									role="option"
-									data-key=""
-									data-search-index=""
-									@click="addItem(item)"
-								>
-									<span class="relationship-item-label">{{item.text}}</span>
-									<button class="relationship-item-add" tabindex="-1" type="button">
-										<k-icon :type="'add'" />
-									</button>
-								</li>
-							</ul>
-							
-							<ol
-								class="relationship-list relationship-list--selected"
-								data-sortable="true"
-								data-deletable="true"
-								aria-activedescendant=""
-								aria-label=""
-								role="listbox"
-								tabindex="0"
-							>
-								<li
-									v-for="(item, index) in value"
-									:id="'relationship_' + _uid + '_selected_' + item.value"
-									role="option"
-									data-key=""
-									aria-selected=""
-									@click="removeItem(item)"
-								>
-									<span class="relationship-item-sort"><k-icon :type="'sort'" /></span>
-									
-									<span class="relationship-item-label">{{item.text}}</span>
-									<button class="relationship-item-delete" tabindex="-1" type="button">
-										<k-icon :type="'remove'" />
-									</button>
-								</li>
-							</ol>
-						</div>
+								<span class="relationship-item-sort"><k-icon :type="'sort'" /></span>
+								
+								<span class="relationship-item-label">{{item.text}}</span>
+								<button class="relationship-item-delete" tabindex="-1" type="button">
+									<k-icon :type="'remove'" />
+								</button>
+							</li>
+						</ol>
 					</div>
 				</k-field>
 			`

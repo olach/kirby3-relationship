@@ -170,23 +170,9 @@
 	margin-bottom: -1px; /* Prevent double borders */
 }
 
-.relationship-search .input {
-	padding-left: 2.5em;
-	/*margin-bottom: -2px;*/ /* Prevent double borders */
+.relationship-search .k-input-element {
+	order: 1; /* Place input after icon */
 }
-
-.relationship-search .icon {
-	position: absolute;
-	top: calc(50% - 0.5em);
-	left: 2px;
-	width: 3em;
-	color: #777;
-}
-
-
-
-
-
 
 
 
