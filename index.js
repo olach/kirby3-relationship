@@ -19,14 +19,23 @@ var RelationshipSearch = {
 }
 
 var RelationshipListbox = {
-	inheritAttrs: false,
+	inheritAttrs: true,
 	props: {
-		search: Boolean
+		items: Array,
+		sortable: Boolean,
+		multiselectable: Boolean,
+		deletable: Boolean
 	},
-	data() {
+	data: function () {
 		return {
-			query: null
+			items: this.items
 		};
+	},
+	watch: {
+		items: function () {
+			console.log(this.items);
+			//this.$emit('input', this.items);
+		}
 	},
 	methods: {
 		onInput() {
@@ -34,9 +43,14 @@ var RelationshipListbox = {
 		}
 	},
 	template: `
-		<component is="ul">
-			<p>ul</p>
-		</component>
+		<k-draggable element="ul" :list="items" :options="{'disabled':!sortable}" role="listbox" tabindex="0">
+			<li v-for="item in items">
+				<span v-if="sortable" class="relationship-item-sort"><k-icon :type="'sort'" /></span>
+				<span class="relationship-item-label">{{item.text}}</span>				
+				<k-button v-if="multiselectable" tabindex="-1" icon="add"></k-button>
+				<k-button v-if="deletable" tabindex="-1" icon="remove"></k-button>
+			</li>
+		</k-draggable>
 	`
 }
 
@@ -80,10 +94,10 @@ panel.plugin('olach/relationship', {
 				key: function (event) {
 					console.log(event.key);
 				},
-				index(theitem) {
+				index: function (theitem) {
 					return this.value.findIndex(item => item.value === theitem.value);
 				},
-				onInput() {
+				onInput: function () {
 					this.$emit("input", this.selected);
 				}
 			},
@@ -92,10 +106,11 @@ panel.plugin('olach/relationship', {
 					return this.value;
 				}
 			},
-			data() {
+			data: function () {
 				return {
 					items: this.value,
-					selected: null,
+					available: this.options,
+					selected: this.value,
 					query: null
 				};
 			},
@@ -105,9 +120,11 @@ panel.plugin('olach/relationship', {
 						<relationship-search />
 					</div>
 					
-					<relationship-listbox />
-					
 					<div class="relationship-lists">							
+						<relationship-listbox class="relationship-list relationship-list--available" :items="available" :sortable="false" :multiselectable="true" :deletable="false" />
+						<relationship-listbox class="relationship-list relationship-list--selected" :items="selected" :sortable="true" :multiselectable="false" :deletable="true" />
+						
+						<!--
 						<ul
 							class="relationship-list relationship-list--available"
 							aria-activedescendant=""
@@ -135,7 +152,9 @@ panel.plugin('olach/relationship', {
 								</button>
 							</li>
 						</ul>
+						-->
 						
+						<!--
 						<ol
 							class="relationship-list relationship-list--selected"
 							data-sortable="true"
@@ -161,6 +180,7 @@ panel.plugin('olach/relationship', {
 								</button>
 							</li>
 						</ol>
+						-->
 					</div>
 				</k-field>
 			`

@@ -49,12 +49,17 @@
 }
 
 /* Reset native button styles: */
-.relationship-list button {
+/*.relationship-list button {
 	border: none;
 	background: none;
 	margin: 0;
 	padding: 0;
 	color: inherit;
+}*/
+
+/* Fix vertical centering on Kirby buttons: */
+.relationship-list button figure {
+	vertical-align: bottom;
 }
 
 .relationship-list button:not([disabled]) {
@@ -131,9 +136,7 @@
 	filter: grayscale(100%);
 }
 
-.relationship-list--available li .relationship-item-sort,
-.relationship-list--available li .relationship-item-delete,
-.relationship-list--available li[aria-selected="true"] .relationship-item-add {
+.relationship-list--available li[aria-selected="true"] button {
 	display: none;
 }
 
