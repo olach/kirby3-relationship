@@ -19,7 +19,7 @@
 	overflow-x: hidden;
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
-	height: 12em;
+	height: 11.25em;
 	margin: 0;
 	padding: 0.5em;
 	border: 1px solid #ccc;
@@ -155,16 +155,28 @@
 }
 
 /* List item during sorting: */
-.relationship-list--selected[data-sortable="true"]:focus li[aria-selected="true"],
+/*.relationship-list--selected[data-sortable="true"]:focus li[aria-selected="true"],
 .relationship-list--selected[data-sortable="true"] li.ui-sortable-helper {
+	background-color: white;
+	border-radius: 2px;
+	box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+}*/
+.relationship-list--selected[data-sortable="true"] li.sortable-chosen {
 	background-color: white;
 	border-radius: 2px;
 	box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Placeholder item when sorting: */
-.relationship-list--selected[data-sortable="true"] li.ui-sortable-placeholder {
+/*.relationship-list--selected[data-sortable="true"] li.ui-sortable-placeholder {
 	background-color: rgba(0, 0, 0, 0.025);
+}*/
+.relationship-list--selected[data-sortable="true"] li.sortable-ghost {
+	background-color: rgba(0, 0, 0, 0.025);
+	box-shadow: none;
+}
+.relationship-list--selected[data-sortable="true"] li.sortable-ghost > * {
+	opacity: 0.4;
 }
 
 /* Search input: */
