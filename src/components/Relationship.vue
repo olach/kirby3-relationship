@@ -1,12 +1,12 @@
 <template>
 	<k-field class="kirby-relationship-field" v-bind="$props">
 		<div class="relationship-search" v-if="search">
-			<relationship-search />
+			<relationship-searchbox />
 		</div>
 		
 		<div class="relationship-lists">							
-			<relationship-listbox class="relationship-list relationship-list--available" :items="available" :selected="selected" :sortable="false" :multiselectable="true" :deletable="false" />
-			<relationship-listbox class="relationship-list relationship-list--selected" :items="selected" :sortable="true" :multiselectable="false" :deletable="true" />
+			<relationship-listbox class="relationship-list relationship-list--available" :items="options" :selected="selected" :sortable="false" :multiselectable="true" :deletable="false" v-on:input="onInput" />
+			<relationship-listbox class="relationship-list relationship-list--selected" :items="selected" :sortable="true" :multiselectable="false" :deletable="true" v-on:input="onInput" />
 			
 			<!--
 			<ul
@@ -75,70 +75,103 @@ import Listbox from './Listbox.vue'
 
 export default {
 	inheritAttrs: false,
-	props: {
-		help: String,
-		label: String,
-		name: String,
-		value: Array,
-		options: Array,
-		search: Boolean,
-	},
 	components: {
 		'relationship-searchbox': Searchbox,
 		'relationship-listbox': Listbox
 	},
-	methods: {
-		addItem: function (item) {
-			//console.log(this.$refs);
-			this.value.push(item);
+	props: {
+		autofocus: Boolean,
+		disabled: Boolean,
+		help: String,
+		id: {
+			type: [Number, String],
+				default() {
+				return this._uid;
+			}
 		},
-		removeItem: function (item) {
-			//console.log(this.$refs);
-			//this.value.push(item);
-			// remove tag and fire input event
-			this.value.splice(this.index(item), 1);
-			//this.onInput(this.value);
+		label: String,
+		name: String,
+		options: {
+			type: Array,
+			default() {
+				return [];
+			}
 		},
-		isInFocus: function () {
-			console.log('in focus');
+		required: Boolean,
+		search: Boolean,
+		value: {
+			type: Array,
+			default() {
+				return [];
+			}
 		},
-		isBlurred: function () {
-			console.log('blurred');
-		},
-		keyDown: function () {
-			console.log('down');
-		},
-		key: function (event) {
-			console.log(event.key);
-		},
-		index: function (theitem) {
-			return this.value.findIndex(item => item.value === theitem.value);
-		},
-		onInput: function () {
-			console.log('onInput');
-			this.$emit("input", this.selected);
-		}
 	},
-	watch: {
-		items: function () {
-			//console.log(this.items);
-			this.$emit('input', this.items);
-		}
-	},
-	computed: {
-		selected: function () {
-			//console.log(this.value[0]);
-			//console.log(options[0]);
-			return this.value;
-		}
-	},
+	//	computed: {
+	//		selected: function () {
+	//			//console.log(this.value[0]);
+	//			//console.log(options[0]);
+	//			return this.value;
+	//		}
+	//	},
 	data: function () {
 		return {
-			items: this.value,
-			available: this.options,
 			selected: this.value,
 			query: null
 		}
+	},
+	watch: {
+		value(value) {
+			this.selected = value;
+		}
+	},
+	mounted() {
+//		this.onInvalid();
+//		
+//		if (this.$props.autofocus) {
+//			this.focus();
+//		}
+	},
+	methods: {
+//		addItem(item) {
+//			//console.log(this.$refs);
+//			this.selected.push(item);
+//			this.$emit('input', this.selected);
+//		},
+//		removeItem(item) {
+//			//console.log(this.$refs);
+//			//this.value.push(item);
+//			// remove tag and fire input event
+//			this.selected.splice(this.index(item), 1);
+//			//this.onInput(this.value);
+//			this.$emit('input', this.selected);
+//		},
+//		isInFocus() {
+//			console.log('in focus');
+//		},
+//		isBlurred() {
+//			console.log('blurred');
+//		},
+//		keyDown() {
+//			console.log('down');
+//		},
+//		key(event) {
+//			console.log(event.key);
+//		},
+//		index(theitem) {
+//			return this.selected.findIndex(item => item.value === theitem.value);
+//		},
+		onInput() {
+			this.$emit('input', this.selected);
+		}
+	},
+	validations() {
+		return {
+//			selected: {
+//				required: this.required ? required : true,
+//				min: this.min ? minLength(this.min) : true,
+//				max: this.max ? maxLength(this.max) : true,
+//			}
+		};
 	}
 }
 </script>
@@ -323,6 +356,13 @@ export default {
 }
 .relationship-list--selected[data-sortable="true"] li.sortable-ghost > * {
 	opacity: 0.4;
+}
+
+.relationship-list--selected[data-sortable="true"] li {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
 }
 
 /* Search input: */

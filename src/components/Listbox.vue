@@ -1,5 +1,5 @@
 <template>
-	<k-draggable element="ul" :list="items" :options="{'disabled':!sortable,animation:150}" role="listbox" :data-sortable="sortable" tabindex="0">
+	<k-draggable element="ul" :list="items" :options="{'disabled':!sortable,animation:150,forceFallback:true}" role="listbox" :data-sortable="sortable" tabindex="0" @change="onInput">
 		<li v-for="item in items" :aria-selected="isSelected(item)" role="option" @click="toggleItem(item)">
 			<k-icon v-if="sortable" class="relationship-item-sort" :type="'sort'" />
 			<span class="relationship-item-label">{{item.text}}</span>				
@@ -30,15 +30,9 @@ export default {
 			selected: this.selected
 		};
 	},
-	watch: {
-		items: function () {
-			//console.log(this.items);
-			//this.$emit('input', this.items);
-		}
-	},
 	methods: {
-		onInput() {
-			//this.$emit("input", this.selected);
+		onInput(value) {
+			this.$emit('input', value);
 		},
 		index: function (option) {
 			return this.state.findIndex(item => item.value === option.value);
@@ -56,6 +50,7 @@ export default {
 		},
 		selectItem: function (item) {
 			this.selected.push(item);
+			this.onInput(this.items);
 		},
 		unselectItem: function (item) {
 			// todo: Use findIndex instead:
@@ -63,6 +58,7 @@ export default {
 			for (var i = 0; i < this.selected.length; i++) {
 				if (this.selected[i].value === item.value) {
 					this.selected.splice(i, 1);
+					this.onInput(this.items);
 					return;
 				}
 			}
@@ -83,6 +79,8 @@ export default {
 			if (index !== -1) {
 				this.items.splice(index, 1);
 			}
+			
+			this.onInput(this.items);
 		},
 		toggleItem: function (item) {
 			if (this.isSelected(item)) {
