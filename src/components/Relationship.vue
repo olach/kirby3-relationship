@@ -1,8 +1,6 @@
 <template>
 	<k-field class="kirby-relationship-field" v-bind="$props">
-		<div class="relationship-search" v-if="search">
-			<relationship-searchbox />
-		</div>
+		<relationship-searchbox v-if="search" />
 		
 		<div class="relationship-lists">							
 			<relationship-listbox class="relationship-list relationship-list--available" :items="options" :selected="selected" :sortable="false" :multiselectable="true" :deletable="false" v-on:input="onInput" />
@@ -60,6 +58,7 @@ export default {
 		}
 	},
 	mounted() {
+		console.log(this.value);
 //		this.onInvalid();
 //		
 //		if (this.$props.autofocus) {

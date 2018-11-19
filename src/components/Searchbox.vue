@@ -1,5 +1,7 @@
 <template>
-	<k-input v-model="query" @input="onInput()" theme="field" type="text" spellcheck="false" icon="search" />
+	<div class="relationship-search">
+		<k-input v-model="query" @input="onInput()" theme="field" type="text" spellcheck="false" icon="search" />
+	</div>
 </template>
 
 <script>

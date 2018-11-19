@@ -1,6 +1,24 @@
 <template>
-	<k-draggable element="ul" :list="items" :options="{'disabled':!sortable,animation:150,forceFallback:true}" role="listbox" :data-sortable="sortable" tabindex="0" @change="onInput">
-		<li v-for="item in items" :aria-selected="isSelected(item)" role="option" @click="toggleItem(item)">
+	<k-draggable
+		element="ul"
+		:list="items"
+		:options="{'disabled':!sortable,animation:150,forceFallback:true}"
+		:data-sortable="sortable"
+		aria-readonly=""
+		:aria-activedescendant="activedescendant"
+		aria-label=""
+		role="listbox"
+		tabindex="0"
+		@focus.native="setupFocus"
+		@change="onInput"
+	>
+		<li
+			v-for="item in items"
+			:id="_uid + item.value"
+			:aria-selected="isSelected(item)"
+			role="option"
+			@click="toggleItem(item)"
+		>
 			<k-icon v-if="sortable" class="relationship-item-sort" :type="'sort'" />
 			<span class="relationship-item-label">{{item.text}}</span>				
 			<k-button v-if="multiselectable" tabindex="-1" icon="add"></k-button>
@@ -22,7 +40,8 @@ export default {
 		},
 		sortable: Boolean,
 		multiselectable: Boolean,
-		deletable: Boolean
+		deletable: Boolean,
+		activedescendant: String
 	},
 	data() {
 		return {
@@ -31,6 +50,59 @@ export default {
 		};
 	},
 	methods: {
+		/**
+		 * Make sure an item is focused. If there is no activeDescendant, focus on the first option.
+		 */
+		setupFocus() {
+//			if (this.activeDescendant) {
+//				var activeDescendant = this.listboxNode.querySelector('#' + this.activeDescendant);
+//				var activeDescendantisHidden = activeDescendant.getAttribute('aria-hidden') === 'true';
+//				
+//				if (activeDescendant && activeDescendantisHidden) {
+//					this.focusFirstItem();
+//					return;
+//				}
+//				
+//				this.focusItem(activeDescendant);
+//				return;
+//			}
+			
+			this.focusFirstItem();
+		},
+		/**
+		 * Focus on the specified item.
+		 */
+		focusItem(item) {
+			console.log(item.text);
+			this.activedescendant = this._uid + item.value;
+//			if (this.activeDescendant && this.activeDescendant !== item.id) {
+//				this.defocusItem(document.getElementById(this.activeDescendant));
+//			}
+//			
+//			item.classList.add('is-focused');
+//			this.setActiveDescendant(item.id);
+//			
+//			if (this.listboxNode.scrollHeight > this.listboxNode.clientHeight) {
+//				var scrollBottom = this.listboxNode.clientHeight + this.listboxNode.scrollTop;
+//				var itemBottom = item.offsetTop + item.offsetHeight;
+//				if (itemBottom > scrollBottom) {
+//					this.listboxNode.scrollTop = itemBottom - this.listboxNode.clientHeight;
+//				}
+//				else if (item.offsetTop < this.listboxNode.scrollTop) {
+//					this.listboxNode.scrollTop = item.offsetTop;
+//				}
+//			}
+		},
+		/**
+		 * Focus on the first option.
+		 */
+		focusFirstItem() {
+			var firstItem = this.items[0];
+			
+			if (firstItem) {
+				this.focusItem(firstItem);
+			}
+		},
 		onInput(value) {
 			this.$emit('input', value);
 		},
