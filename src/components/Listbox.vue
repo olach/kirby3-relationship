@@ -167,9 +167,7 @@ export default {
 
 <style>
 .relationship-list {
-	-webkit-flex: 1 0 14em;
-	    -ms-flex: 1 0 14em;
-	        flex: 1 0 14em;
+	flex: 1 0 14em;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
@@ -184,8 +182,7 @@ export default {
 /* List in focus: */
 .relationship-list:focus {
 	border-color: #4271ae;
-	-webkit-box-shadow: 0 0 0 2px rgba(66, 113, 174, .25);
-	        box-shadow: 0 0 0 2px rgba(66, 113, 174, .25);
+	box-shadow: 0 0 0 2px rgba(66, 113, 174, .25);
 	outline: none;
 	position: relative; /* Prevent border to go underneath the other list */
 }
@@ -209,12 +206,8 @@ export default {
 
 /* Default styling for all list items: */
 .relationship-list li {
-	display: -webkit-flex;
-	display: -ms-flexbox;
 	display: flex;
-	-webkit-align-items: center;
-	     -ms-flex-align: center;
-	        align-items: center;
+	align-items: center;
 	padding: 0.25em;
 	overflow: hidden;
 	cursor: pointer;
@@ -233,9 +226,7 @@ export default {
 }
 
 .relationship-list li .relationship-item-label {
-	-webkit-flex: 1;
-	    -ms-flex: 1;
-	        flex: 1;
+	flex: 1;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -312,10 +303,7 @@ export default {
 }
 
 .relationship-list--selected[data-sortable="true"] li {
-	-webkit-user-select: none;
-	   -moz-user-select: none;
-	    -ms-user-select: none;
-	        user-select: none;
+	user-select: none;
 }
 
 /*
@@ -329,7 +317,6 @@ export default {
     z-index: 1;
     cursor: -webkit-grab;
     will-change: opacity, color;
-    -webkit-transition: opacity .3s;
     transition: opacity .3s
 }
 
