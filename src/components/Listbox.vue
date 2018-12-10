@@ -2,8 +2,10 @@
 	<k-draggable
 		element="ul"
 		:list="items"
-		:options="{'disabled':!sortable,animation:150,forceFallback:true}"
+		:options="{disabled:!sortable,handle:'.relationship-item-sort',animation:150,forceFallback:true}"
 		:data-sortable="sortable"
+		:data-multiselectable="multiselectable"
+		:data-deletable="deletable"
 		aria-readonly=""
 		:aria-activedescendant="activedescendant"
 		aria-label=""
@@ -142,7 +144,7 @@ export default {
 //			}
 		},
 		removeItem(item) {
-			if (this.deletable === false) {
+			if (!this.deletable) {
 				return false;
 			}
 			
@@ -159,6 +161,13 @@ export default {
 				this.unselectItem(item);
 			} else {
 				this.selectItem(item);
+			}
+			
+			// todo:
+			if (this.multiselectable) {
+				
+			} else {
+				// Deselect all other selected items.
 			}
 		}
 	}
@@ -210,7 +219,6 @@ export default {
 	align-items: center;
 	padding: 0.25em;
 	overflow: hidden;
-	cursor: pointer;
 }
 
 .relationship-list li > * {
@@ -233,7 +241,18 @@ export default {
 }
 
 .relationship-list li .relationship-item-sort {
-	color: #ccc;
+	opacity: 0.25;
+	will-change: opacity;
+	transition: opacity 0.3s;
+	cursor: -webkit-grab;
+}
+
+.relationship-list li .relationship-item-sort:active {
+	cursor: -webkit-grabbing;
+}
+
+.relationship-list li:hover .relationship-item-sort {
+	opacity: 1;
 }
 
 .relationship-list li .relationship-item-thumb {
@@ -246,90 +265,54 @@ export default {
 }
 
 /* List with available items: */
-.relationship-list--available {
-	background-color: #f7f7f7;
+.relationship-list[data-multiselectable="true"] li {
+	cursor: pointer;
 }
 
-.relationship-list--available:focus li.is-focused {
+.relationship-list[data-multiselectable="true"]:focus li.is-focused {
 	background-color: rgba(0, 0, 0, 0.075);
 }
 
-.relationship-list--available li[aria-selected="true"] {
+.relationship-list[data-multiselectable="true"] li[aria-selected="true"] {
 	color: #777;
 }
 
-.relationship-list--available li[aria-selected="true"] .relationship-item-thumb {
+.relationship-list[data-multiselectable="true"] li[aria-selected="true"] .relationship-item-thumb {
 	opacity: 0.2;
 	filter: grayscale(100%);
 }
 
-.relationship-list--available li[aria-selected="true"] button {
+.relationship-list[data-multiselectable="true"] li[aria-selected="true"] button {
 	display: none;
 }
 
 /* Selected list items: */
-.relationship-list--selected li {
-	cursor: move;
+.relationship-list[data-sortable="true"] li {
 	transition: box-shadow 150ms ease-out;
 }
 
-.relationship-list--selected:focus li.is-focused {
+.relationship-list[data-sortable="true"]:focus li.is-focused {
 	background-color: rgba(0, 0, 0, 0.075);
 }
 
 /* List item during sorting: */
-/*.relationship-list--selected[data-sortable="true"]:focus li[aria-selected="true"],
-.relationship-list--selected[data-sortable="true"] li.ui-sortable-helper {
-	background-color: white;
-	border-radius: 2px;
-	box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
-}*/
-.relationship-list--selected[data-sortable="true"] li.sortable-chosen {
+.relationship-list[data-sortable="true"]:focus li[aria-selected="true"],
+.relationship-list[data-sortable="true"] li.sortable-chosen {
 	background-color: white;
 	border-radius: 2px;
 	box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Placeholder item when sorting: */
-/*.relationship-list--selected[data-sortable="true"] li.ui-sortable-placeholder {
-	background-color: rgba(0, 0, 0, 0.025);
-}*/
-.relationship-list--selected[data-sortable="true"] li.sortable-ghost {
+.relationship-list[data-sortable="true"] li.sortable-ghost {
 	background-color: rgba(0, 0, 0, 0.025);
 	box-shadow: none;
 }
-.relationship-list--selected[data-sortable="true"] li.sortable-ghost > * {
+.relationship-list[data-sortable="true"] li.sortable-ghost > * {
 	opacity: 0.4;
 }
 
-.relationship-list--selected[data-sortable="true"] li {
+.relationship-list[data-sortable="true"] li {
 	user-select: none;
 }
-
-/*
-.k-list-item .k-sort-handle {
-    position: absolute;
-    left: -38px;
-    width: 38px;
-    height: 38px;
-    color: #16171a;
-    opacity: 0;
-    z-index: 1;
-    cursor: -webkit-grab;
-    will-change: opacity, color;
-    transition: opacity .3s
-}
-
-.k-list-item .k-sort-handle:active {
-    cursor: -webkit-grabbing
-}
-
-.k-list:hover .k-sort-handle {
-    opacity: .25
-}
-
-.k-list-item:hover .k-sort-handle {
-    opacity: 1
-}
-*/
 </style>

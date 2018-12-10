@@ -3,8 +3,23 @@
 		<relationship-searchbox v-if="search" />
 		
 		<div class="relationship-lists">							
-			<relationship-listbox class="relationship-list relationship-list--available" :items="options" :selected="selected" :sortable="false" :multiselectable="true" :deletable="false" v-on:input="onInput" />
-			<relationship-listbox class="relationship-list relationship-list--selected" :items="selected" :sortable="true" :multiselectable="false" :deletable="true" v-on:input="onInput" />
+			<relationship-listbox
+				class="relationship-list"
+				:items="options"
+				:selected="selected"
+				:multiselectable="true"
+				:sortable="false"
+				:deletable="false"
+				v-on:input="onInput"
+			/>
+			<relationship-listbox
+				class="relationship-list"
+				:items="selected"
+				:multiselectable="false"
+				:sortable="true"
+				:deletable="true"
+				v-on:input="onInput"
+			/>
 		</div>
 	</k-field>
 </template>
@@ -45,6 +60,7 @@ export default {
 				return [];
 			}
 		},
+		multiselectable: String
 	},
 	data() {
 		return {
@@ -89,11 +105,15 @@ export default {
 	border: 1px solid #ccc;
 }
 
-.relationship-search + .relationship-lists {
+.relationship-lists:not(:first-child) {
 	margin-top: -1px; /* Prevent double borders */
 }
 
 .relationship-lists > .relationship-list {
 	margin: -1px; /* Prevent double borders */
+}
+
+.relationship-lists > :first-child {
+	background-color: #f7f7f7;
 }
 </style>
