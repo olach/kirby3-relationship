@@ -16,13 +16,16 @@
 		@keydown.space.native.prevent="onSpace"
 		@keydown.up.native.prevent="focusPrevItem"
 		@keydown.down.native.prevent="focusNextItem"
+		@keydown.delete.native.prevent="removeItem(focused)"
 	>
 		<li
 			v-for="item in items"
 			:id="_uid + item.value"
 			:aria-selected="isSelected(item)"
 			role="option"
+			@mousedown="focusItem(item)"
 			@click="clickItem(item)"
+			class="relationship-item"
 			:class="{'is-focused': isFocused(item)}"
 		>
 			<k-icon v-if="sortable" class="relationship-item-sort" :type="'sort'" />
@@ -183,7 +186,7 @@ export default {
 //			}
 		},
 		removeItem(item) {
-			if (!this.deletable) {
+			if (!this.deletable || !item) {
 				return false;
 			}
 			
@@ -241,6 +244,10 @@ export default {
 	position: relative; /* Prevent border to go underneath the other list */
 }
 
+.relationship-list:focus li.is-focused {
+	background-color: rgba(0, 0, 0, 0.075);
+}
+
 /* Readonly state for the lists: */
 .relationship-list[aria-readonly="true"] {
 	color: #777;
@@ -249,24 +256,20 @@ export default {
 	pointer-events: none;
 }
 
-/* Fix vertical centering on Kirby buttons: */
-.relationship-list button figure {
-	vertical-align: bottom;
-}
-
-.relationship-list button:not([disabled]) {
-	cursor: pointer;
-}
-
 /* Default styling for all list items: */
-.relationship-list li {
+.relationship-item {
 	display: flex;
 	align-items: center;
 	padding: 0.25em;
 	overflow: hidden;
+	user-select: none;
 }
 
-.relationship-list li > * {
+.relationship-item[aria-hidden="true"] {
+	display: none;
+}
+
+.relationship-item > * {
 	margin: 0 0.25em;
 	
 	/* Workaround for a bug in IE 10: Inline elements are not treated as flex-items */
@@ -274,33 +277,29 @@ export default {
 	display: block;
 }
 
-.relationship-list li[aria-hidden="true"] {
-	display: none;
-}
-
-.relationship-list li .relationship-item-label {
+.relationship-item-label {
 	flex: 1;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
-.relationship-list li .relationship-item-sort {
+.relationship-item-sort {
 	opacity: 0.25;
 	will-change: opacity;
 	transition: opacity 0.3s;
 	cursor: -webkit-grab;
 }
 
-.relationship-list li .relationship-item-sort:active {
-	cursor: -webkit-grabbing;
-}
-
-.relationship-list li:hover .relationship-item-sort {
+.relationship-item:hover .relationship-item-sort {
 	opacity: 1;
 }
 
-.relationship-list li .relationship-item-thumb {
+.relationship-item-sort:active {
+	cursor: -webkit-grabbing;
+}
+
+.relationship-item-thumb {
 	width: 1.375em;
 	height: 1.375em;
 	margin-top: -0.1875em;
@@ -309,13 +308,18 @@ export default {
 	border-radius: 12%;
 }
 
-/* List with available items: */
-.relationship-list[data-multiselectable="true"] li {
+/* Fix vertical centering on Kirby buttons: */
+.relationship-item button figure {
+	vertical-align: bottom;
+}
+
+.relationship-item button:not([disabled]) {
 	cursor: pointer;
 }
 
-.relationship-list[data-multiselectable="true"]:focus li.is-focused {
-	background-color: rgba(0, 0, 0, 0.075);
+/* List with multiselectable items: */
+.relationship-list[data-multiselectable="true"] li {
+	cursor: pointer;
 }
 
 .relationship-list[data-multiselectable="true"] li[aria-selected="true"] {
@@ -331,33 +335,27 @@ export default {
 	display: none;
 }
 
-/* Selected list items: */
+/* Sortable list items: */
 .relationship-list[data-sortable="true"] li {
 	transition: box-shadow 150ms ease-out;
 }
 
-.relationship-list[data-sortable="true"]:focus li.is-focused {
-	background-color: rgba(0, 0, 0, 0.075);
-}
-
 /* List item during sorting: */
 .relationship-list[data-sortable="true"]:focus li[aria-selected="true"],
-.relationship-list[data-sortable="true"] li.sortable-chosen {
+.relationship-item.k-sortable-fallback {
 	background-color: white;
 	border-radius: 2px;
 	box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Placeholder item when sorting: */
-.relationship-list[data-sortable="true"] li.sortable-ghost {
+.relationship-item.k-sortable-ghost {
 	background-color: rgba(0, 0, 0, 0.025);
 	box-shadow: none;
-}
-.relationship-list[data-sortable="true"] li.sortable-ghost > * {
-	opacity: 0.4;
+	cursor: -webkit-grabbing;
 }
 
-.relationship-list[data-sortable="true"] li {
-	user-select: none;
+.relationship-item.k-sortable-ghost > * {
+	opacity: 0;
 }
 </style>
