@@ -13,13 +13,17 @@
 		tabindex="0"
 		@focus.native="setupFocus"
 		@change="onInput"
+		@keydown.space.native.prevent="onSpace"
+		@keydown.up.native.prevent="focusPrevItem"
+		@keydown.down.native.prevent="focusNextItem"
 	>
 		<li
 			v-for="item in items"
 			:id="_uid + item.value"
 			:aria-selected="isSelected(item)"
 			role="option"
-			@click="toggleItem(item)"
+			@click="clickItem(item)"
+			:class="{'is-focused': isFocused(item)}"
 		>
 			<k-icon v-if="sortable" class="relationship-item-sort" :type="'sort'" />
 			<span class="relationship-item-label">{{item.text}}</span>				
@@ -42,13 +46,14 @@ export default {
 		},
 		sortable: Boolean,
 		multiselectable: Boolean,
-		deletable: Boolean,
-		activedescendant: String
+		deletable: Boolean
 	},
 	data() {
 		return {
 			items: this.items,
-			selected: this.selected
+			selected: this.selected,
+			focused: null,
+			activedescendant: null
 		};
 	},
 	methods: {
@@ -69,13 +74,15 @@ export default {
 //				return;
 //			}
 			
-			this.focusFirstItem();
+			if (!this.focused) {
+				this.focusFirstItem();
+			}
 		},
 		/**
 		 * Focus on the specified item.
 		 */
 		focusItem(item) {
-			console.log(item.text);
+			this.focused = item;
 			this.activedescendant = this._uid + item.value;
 //			if (this.activeDescendant && this.activeDescendant !== item.id) {
 //				this.defocusItem(document.getElementById(this.activeDescendant));
@@ -105,11 +112,43 @@ export default {
 				this.focusItem(firstItem);
 			}
 		},
+		focusPrevItem() {
+			if (!this.focused) {
+				this.focusFirstItem();
+				return;
+			}
+			
+			var prevItem = this.items[this.getIndex(this.focused) - 1];
+			
+			if (prevItem) {
+				this.focusItem(prevItem);
+			}
+		},
+		focusNextItem() {
+			if (!this.focused) {
+				this.focusFirstItem();
+				return;
+			}
+			
+			var nextItem = this.items[this.getIndex(this.focused) + 1];
+			
+			if (nextItem) {
+				this.focusItem(nextItem);
+			}
+		},
 		onInput(value) {
 			this.$emit('input', value);
 		},
-		index(option) {
-			return this.state.findIndex(item => item.value === option.value);
+		onSpace() {
+			if (this.focused) {
+				this.toggleItem(this.focused);
+			}
+		},
+		getIndex(testitem) {
+			return this.items.findIndex(item => item.value === testitem.value);
+		},
+		isFocused(item) {
+			return item === this.focused;
 		},
 		isSelected(item) {
 			// todo: Use findIndex instead:
@@ -160,12 +199,18 @@ export default {
 			if (this.isSelected(item)) {
 				this.unselectItem(item);
 			} else {
+				if (!this.multiselectable) {
+					// Deselect all other selected items.
+					this.selected = [];
+				}
+				
 				this.selectItem(item);
 			}
-			
+		},
+		clickItem(item) {
 			// todo:
 			if (this.multiselectable) {
-				
+				this.toggleItem(item);
 			} else {
 				// Deselect all other selected items.
 			}
