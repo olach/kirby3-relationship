@@ -59,60 +59,11 @@ export default {
 		};
 	},
 	methods: {
-		/**
-		 * Make sure an item is focused. If there is no activeDescendant, focus on the first option.
-		 */
-		setupFocus() {
-//			if (this.activeDescendant) {
-//				var activeDescendant = this.listboxNode.querySelector('#' + this.activeDescendant);
-//				var activeDescendantisHidden = activeDescendant.getAttribute('aria-hidden') === 'true';
-//				
-//				if (activeDescendant && activeDescendantisHidden) {
-//					this.focusFirstItem();
-//					return;
-//				}
-//				
-//				this.focusItem(activeDescendant);
-//				return;
-//			}
-			
-			if (!this.focused) {
-				this.focusFirstItem();
+		clickItem(item) {
+			if (this.multiselectable) {
+				this.toggleItem(item);
 			}
 		},
-		onBlur() {
-			if (this.sortable) {
-				// Deselect all selected items.
-				this.selected = [];
-			}
-		},
-		/**
-		 * Focus on the specified item.
-		 */
-		focusItem(item) {
-			this.focused = item;
-			this.activedescendant = this._uid + item.value;
-//			if (this.activeDescendant && this.activeDescendant !== item.id) {
-//				this.defocusItem(document.getElementById(this.activeDescendant));
-//			}
-//			
-//			item.classList.add('is-focused');
-//			this.setActiveDescendant(item.id);
-//			
-//			if (this.listboxNode.scrollHeight > this.listboxNode.clientHeight) {
-//				var scrollBottom = this.listboxNode.clientHeight + this.listboxNode.scrollTop;
-//				var itemBottom = item.offsetTop + item.offsetHeight;
-//				if (itemBottom > scrollBottom) {
-//					this.listboxNode.scrollTop = itemBottom - this.listboxNode.clientHeight;
-//				}
-//				else if (item.offsetTop < this.listboxNode.scrollTop) {
-//					this.listboxNode.scrollTop = item.offsetTop;
-//				}
-//			}
-		},
-		/**
-		 * Focus on the first option.
-		 */
 		focusFirstItem() {
 			var firstItem = this.items[0];
 			
@@ -120,16 +71,17 @@ export default {
 				this.focusItem(firstItem);
 			}
 		},
-		focusPrevItem() {
-			if (!this.focused) {
-				this.focusFirstItem();
-				return;
-			}
+		focusItem(item) {
+			this.focused = item;
+			this.activedescendant = this._uid + item.value;
 			
-			var prevItem = this.items[this.getIndex(this.focused) - 1];
+			this.scrollIntoView(item);
+		},
+		focusLastItem() {
+			var lastItem = this.items[this.items.length - 1];
 			
-			if (prevItem) {
-				this.focusItem(prevItem);
+			if (lastItem) {
+				this.focusItem(lastItem);
 			}
 		},
 		focusNextItem() {
@@ -144,49 +96,20 @@ export default {
 				this.focusItem(nextItem);
 			}
 		},
-		onInput(value) {
-			this.$emit('input', value);
-		},
-		onKeySpace() {
-			if (this.focused) {
-				this.toggleItem(this.focused);
+		focusPrevItem() {
+			if (!this.focused) {
+				this.focusFirstItem();
+				return;
 			}
-		},
-		onKeyUp() {
-			if (this.sortable && this.focused && this.isSelected(this.focused)) {
-				this.moveUp(this.focused);
-			} else {
-				this.focusPrevItem();
-			}
-		},
-		onKeyDown() {
-			if (this.sortable && this.focused && this.isSelected(this.focused)) {
-				this.moveDown(this.focused);
-			} else {
-				this.focusNextItem();
-			}
-		},
-		moveUp(item) {
-			var itemPos = this.getIndex(item);
 			
-			if (itemPos > 0) {
-				var temp = this.items[itemPos - 1];
-				this.items[itemPos - 1] = item;
-				this.items[itemPos] = temp;
-				this.onInput(this.items);
-			}
-		},
-		moveDown(item) {
-			var itemPos = this.getIndex(item);
+			var prevItem = this.items[this.getIndex(this.focused) - 1];
 			
-			if (itemPos < this.items.length - 1) {
-				var temp = this.items[itemPos + 1];
-				this.items[itemPos + 1] = item;
-				this.items[itemPos] = temp;
-				this.onInput(this.items);
+			if (prevItem) {
+				this.focusItem(prevItem);
 			}
 		},
 		getIndex(testitem) {
+			// todo: findIndex has no IE support. Change?
 			return this.items.findIndex(item => item.value === testitem.value);
 		},
 		isFocused(item) {
@@ -203,26 +126,53 @@ export default {
 			
 			return false;
 		},
-		selectItem(item) {
-			this.selected.push(item);
-			this.onInput(this.items);
-		},
-		unselectItem(item) {
-			// todo: Use findIndex instead:
-			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
-			for (var i = 0; i < this.selected.length; i++) {
-				if (this.selected[i].value === item.value) {
-					this.selected.splice(i, 1);
-					this.onInput(this.items);
-					return;
-				}
+		moveDown(item) {
+			var itemPos = this.getIndex(item);
+			
+			if (itemPos < this.items.length - 1) {
+				var temp = this.items[itemPos + 1];
+				this.items[itemPos + 1] = item;
+				this.items[itemPos] = temp;
+				this.onInput(this.items);
 			}
+		},
+		moveUp(item) {
+			var itemPos = this.getIndex(item);
 			
-//			var index = this.selected.indexOf(item);
-			
-//			if (index !== -1) {
-//				this.selected.splice(index, 1);
-//			}
+			if (itemPos > 0) {
+				var temp = this.items[itemPos - 1];
+				this.items[itemPos - 1] = item;
+				this.items[itemPos] = temp;
+				this.onInput(this.items);
+			}
+		},
+		onBlur() {
+			if (this.sortable) {
+				// Deselect all selected items.
+				this.selected = [];
+			}
+		},
+		onInput(value) {
+			this.$emit('input', value);
+		},
+		onKeyDown() {
+			if (this.sortable && this.focused && this.isSelected(this.focused)) {
+				this.moveDown(this.focused);
+			} else {
+				this.focusNextItem();
+			}
+		},
+		onKeySpace() {
+			if (this.focused) {
+				this.toggleItem(this.focused);
+			}
+		},
+		onKeyUp() {
+			if (this.sortable && this.focused && this.isSelected(this.focused)) {
+				this.moveUp(this.focused);
+			} else {
+				this.focusPrevItem();
+			}
 		},
 		removeItem(item) {
 			if (!this.deletable || !item) {
@@ -237,6 +187,18 @@ export default {
 			
 			this.onInput(this.items);
 		},
+		scrollIntoView(item) {
+			// todo
+		},
+		selectItem(item) {
+			this.selected.push(item);
+			this.onInput(this.items);
+		},
+		setupFocus() {
+			if (!this.focused) {
+				this.focusFirstItem();
+			}
+		},
 		toggleItem(item) {
 			if (this.isSelected(item)) {
 				this.unselectItem(item);
@@ -249,12 +211,15 @@ export default {
 				this.selectItem(item);
 			}
 		},
-		clickItem(item) {
-			// todo:
-			if (this.multiselectable) {
-				this.toggleItem(item);
-			} else {
-				// Deselect all other selected items.
+		unselectItem(item) {
+			// todo: Use findIndex instead:
+			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
+			for (var i = 0; i < this.selected.length; i++) {
+				if (this.selected[i].value === item.value) {
+					this.selected.splice(i, 1);
+					this.onInput(this.items);
+					return;
+				}
 			}
 		}
 	}
