@@ -12,10 +12,11 @@
 		role="listbox"
 		tabindex="0"
 		@focus.native="setupFocus"
+		@blur.native="onBlur"
 		@change="onInput"
-		@keydown.space.native.prevent="onSpace"
-		@keydown.up.native.prevent="focusPrevItem"
-		@keydown.down.native.prevent="focusNextItem"
+		@keydown.space.native.prevent="onKeySpace"
+		@keydown.up.native.prevent="onKeyUp"
+		@keydown.down.native.prevent="onKeyDown"
 		@keydown.delete.native.prevent="removeItem(focused)"
 	>
 		<li
@@ -53,8 +54,6 @@ export default {
 	},
 	data() {
 		return {
-			items: this.items,
-			selected: this.selected,
 			focused: null,
 			activedescendant: null
 		};
@@ -79,6 +78,12 @@ export default {
 			
 			if (!this.focused) {
 				this.focusFirstItem();
+			}
+		},
+		onBlur() {
+			if (this.sortable) {
+				// Deselect all selected items.
+				this.selected = [];
 			}
 		},
 		/**
@@ -142,9 +147,43 @@ export default {
 		onInput(value) {
 			this.$emit('input', value);
 		},
-		onSpace() {
+		onKeySpace() {
 			if (this.focused) {
 				this.toggleItem(this.focused);
+			}
+		},
+		onKeyUp() {
+			if (this.sortable && this.focused && this.isSelected(this.focused)) {
+				this.moveUp(this.focused);
+			} else {
+				this.focusPrevItem();
+			}
+		},
+		onKeyDown() {
+			if (this.sortable && this.focused && this.isSelected(this.focused)) {
+				this.moveDown(this.focused);
+			} else {
+				this.focusNextItem();
+			}
+		},
+		moveUp(item) {
+			var itemPos = this.getIndex(item);
+			
+			if (itemPos > 0) {
+				var temp = this.items[itemPos - 1];
+				this.items[itemPos - 1] = item;
+				this.items[itemPos] = temp;
+				this.onInput(this.items);
+			}
+		},
+		moveDown(item) {
+			var itemPos = this.getIndex(item);
+			
+			if (itemPos < this.items.length - 1) {
+				var temp = this.items[itemPos + 1];
+				this.items[itemPos + 1] = item;
+				this.items[itemPos] = temp;
+				this.onInput(this.items);
 			}
 		},
 		getIndex(testitem) {
