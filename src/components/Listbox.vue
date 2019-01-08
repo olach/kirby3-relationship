@@ -222,7 +222,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .relationship-list {
 	flex: 1 0 14em;
 	overflow-x: hidden;
@@ -242,10 +242,10 @@ export default {
 	box-shadow: 0 0 0 2px rgba(66, 113, 174, .25);
 	outline: none;
 	position: relative; /* Prevent border to go underneath the other list */
-}
-
-.relationship-list:focus li.is-focused {
-	background-color: rgba(0, 0, 0, 0.075);
+	
+	li.is-focused {
+		background-color: rgba(0, 0, 0, 0.075);
+	}
 }
 
 /* Readonly state for the lists: */
@@ -263,18 +263,18 @@ export default {
 	padding: 0.25em;
 	overflow: hidden;
 	user-select: none;
-}
-
-.relationship-item[aria-hidden="true"] {
-	display: none;
-}
-
-.relationship-item > * {
-	margin: 0 0.25em;
 	
-	/* Workaround for a bug in IE 10: Inline elements are not treated as flex-items */
-	/* https://github.com/philipwalton/flexbugs#12-inline-elements-are-not-treated-as-flex-items */
-	display: block;
+	> * {
+		margin: 0 0.25em;
+		
+		/* Workaround for a bug in IE 10: Inline elements are not treated as flex-items */
+		/* https://github.com/philipwalton/flexbugs#12-inline-elements-are-not-treated-as-flex-items */
+		display: block;
+	}
+	
+	&[aria-hidden="true"] {
+		display: none;
+	}
 }
 
 .relationship-item-label {
@@ -308,31 +308,34 @@ export default {
 	border-radius: 12%;
 }
 
-/* Fix vertical centering on Kirby buttons: */
-.relationship-item button figure {
-	vertical-align: bottom;
-}
-
-.relationship-item button:not([disabled]) {
-	cursor: pointer;
+.relationship-item button {
+	figure {
+		vertical-align: bottom;
+	}
+	
+	&:not([disabled]) {
+		cursor: pointer;
+	}
 }
 
 /* List with multiselectable items: */
-.relationship-list[data-multiselectable="true"] li {
-	cursor: pointer;
-}
-
-.relationship-list[data-multiselectable="true"] li[aria-selected="true"] {
-	color: #777;
-}
-
-.relationship-list[data-multiselectable="true"] li[aria-selected="true"] .relationship-item-thumb {
-	opacity: 0.2;
-	filter: grayscale(100%);
-}
-
-.relationship-list[data-multiselectable="true"] li[aria-selected="true"] button {
-	display: none;
+.relationship-list[data-multiselectable="true"] {
+	li {
+		cursor: pointer;
+	}
+	
+	li[aria-selected="true"] {
+		color: #777;
+		
+		.relationship-item-thumb {
+			opacity: 0.2;
+			filter: grayscale(100%);
+		}
+		
+		button {
+			display: none;
+		}
+	}
 }
 
 /* Sortable list items: */
@@ -353,9 +356,9 @@ export default {
 	background-color: rgba(0, 0, 0, 0.025);
 	box-shadow: none;
 	cursor: -webkit-grabbing;
-}
-
-.relationship-item.k-sortable-ghost > * {
-	opacity: 0;
+	
+	> * {
+		opacity: 0;
+	}
 }
 </style>
