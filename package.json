@@ -15,9 +15,18 @@
 		"watch": "rollup -cw"
 	},
 	"browserslist": [
-		"> 1%",
 		"last 2 versions",
-		"not ie <= 8"
+		"> 0.2%",
+		"not dead",
+		"not chrome < 57",
+		"not firefox < 54",
+		"not safari < 10.1",
+		"not edge < 16",
+		"not opera < 44",
+		"not ios_saf < 10.3",
+		"not android < 67",
+		"not and_chr < 70",
+		"not ie <= 11"
 	],
 	"babel": {
 		"presets": [
