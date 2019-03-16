@@ -1,5 +1,5 @@
 <template>
-	<k-field class="kirby-relationship-field" v-bind="$props">
+	<k-field class="kirby-relationship-field" v-bind="$props" :counter="counterOptions">
 		<div class="relationship-search" v-if="search">
 			<k-input v-model="query" theme="field" type="text" spellcheck="false" icon="search" />
 		</div>
@@ -36,6 +36,10 @@ export default {
 	},
 	props: {
 		autofocus: Boolean,
+		counter: {
+			type: Boolean,
+			default: true
+		},
 		disabled: Boolean,
 		help: String,
 		id: {
@@ -45,6 +49,8 @@ export default {
 			}
 		},
 		label: String,
+		max: Number,
+		min: Number,
 		name: String,
 		options: {
 			type: Array,
@@ -69,6 +75,17 @@ export default {
 		}
 	},
 	computed: {
+		counterOptions() {
+			if (this.value === null || this.disabled || this.counter === false) {
+				return false;
+			}
+			
+			return {
+				count: this.value && Array.isArray(this.value) ? this.value.length : 0,
+				min: this.min,
+				max: this.max
+			};
+		},
 		filteredOptions() {
 			return this.options.filter(item => {
 				return item.text.toLowerCase().includes(this.query.toLowerCase())
