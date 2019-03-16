@@ -1,11 +1,13 @@
 <template>
 	<k-field class="kirby-relationship-field" v-bind="$props">
-		<relationship-searchbox v-if="search" />
+		<div class="relationship-search" v-if="search">
+			<k-input v-model="query" theme="field" type="text" spellcheck="false" icon="search" />
+		</div>
 		
-		<div class="relationship-lists">							
+		<div class="relationship-lists">
 			<relationship-listbox
 				class="relationship-list"
-				:items="options"
+				:items="filteredOptions"
 				:selected="selected"
 				:multiselectable="true"
 				:sortable="false"
@@ -25,13 +27,11 @@
 </template>
 
 <script>
-import Searchbox from './Searchbox.vue'
 import Listbox from './Listbox.vue'
 
 export default {
 	inheritAttrs: false,
 	components: {
-		'relationship-searchbox': Searchbox,
 		'relationship-listbox': Listbox
 	},
 	props: {
@@ -65,7 +65,14 @@ export default {
 	data() {
 		return {
 			selected: this.value,
-			query: null
+			query: ''
+		}
+	},
+	computed: {
+		filteredOptions() {
+			return this.options.filter(item => {
+				return item.text.toLowerCase().includes(this.query.toLowerCase())
+			})
 		}
 	},
 	watch: {
@@ -115,5 +122,13 @@ export default {
 
 .relationship-lists > :first-child {
 	background-color: #f7f7f7;
+}
+
+.relationship-search {
+	position: relative; /* Prevent border to go underneath the other list when focused */
+}
+
+.relationship-search .k-input-element {
+	order: 1; /* Place input after icon */
 }
 </style>
