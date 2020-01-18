@@ -8,6 +8,3 @@ This plugin is free to use. But if you find it helpful, feel free to [buy me a c
 
 ## Requirements
 Kirby 3
-
-## Beta version
-Note that this is currently a work in progress. The core functionality is in place, but some parts are missing or incomplete.
