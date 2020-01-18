@@ -12,5 +12,8 @@ Download and copy this repository to `/site/plugins/relationship`
 
 Alternatively, you can install it with composer: `composer require olach/relationship`
 
+## Usage
+Instructions coming soon. In the meantime, please refer to the [documentation](https://github.com/olach/kirby-relationship) for the Kirby 2 version of this plugin.
+
 ## Requirements
 Kirby 3
