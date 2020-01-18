@@ -1,0 +1,15 @@
+{
+	"name": "olach/relationship",
+	"description": "Sortable multiselect field for Kirby 3 CMS",
+	"type": "kirby-plugin",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Ola Christensson",
+			"email": "ola.christensson@grandpublic.se"
+		}
+	],
+	"require": {
+		"getkirby/composer-installer": "^1.1"
+	}
+}
