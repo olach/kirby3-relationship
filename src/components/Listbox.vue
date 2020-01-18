@@ -30,7 +30,7 @@
 			:class="{'is-focused': isFocused(item)}"
 		>
 			<k-icon v-if="sortable" class="relationship-item-sort" :type="'sort'" />
-			<span class="relationship-item-label">{{item.text}}</span>				
+			<span class="relationship-item-label">{{item.text}}</span>
 			<k-button v-if="multiselectable" tabindex="-1" icon="add"></k-button>
 			<k-button v-if="deletable" @click="removeItem(item)" tabindex="-1" icon="remove"></k-button>
 		</li>
@@ -66,7 +66,7 @@ export default {
 		},
 		focusFirstItem() {
 			var firstItem = this.items[0];
-			
+
 			if (firstItem) {
 				this.focusItem(firstItem);
 			}
@@ -74,12 +74,12 @@ export default {
 		focusItem(item) {
 			this.focused = item;
 			this.activedescendant = this._uid + item.value;
-			
+
 			this.scrollIntoView(item);
 		},
 		focusLastItem() {
 			var lastItem = this.items[this.items.length - 1];
-			
+
 			if (lastItem) {
 				this.focusItem(lastItem);
 			}
@@ -89,9 +89,9 @@ export default {
 				this.focusFirstItem();
 				return;
 			}
-			
+
 			var nextItem = this.items[this.getIndex(this.focused) + 1];
-			
+
 			if (nextItem) {
 				this.focusItem(nextItem);
 			}
@@ -101,9 +101,9 @@ export default {
 				this.focusFirstItem();
 				return;
 			}
-			
+
 			var prevItem = this.items[this.getIndex(this.focused) - 1];
-			
+
 			if (prevItem) {
 				this.focusItem(prevItem);
 			}
@@ -123,12 +123,12 @@ export default {
 					return true;
 				}
 			}
-			
+
 			return false;
 		},
 		moveDown(item) {
 			var itemPos = this.getIndex(item);
-			
+
 			if (itemPos < this.items.length - 1) {
 				var temp = this.items[itemPos + 1];
 				this.items[itemPos + 1] = item;
@@ -138,7 +138,7 @@ export default {
 		},
 		moveUp(item) {
 			var itemPos = this.getIndex(item);
-			
+
 			if (itemPos > 0) {
 				var temp = this.items[itemPos - 1];
 				this.items[itemPos - 1] = item;
@@ -178,13 +178,13 @@ export default {
 			if (!this.deletable || !item) {
 				return false;
 			}
-			
+
 			var index = this.items.indexOf(item);
-			
+
 			if (index !== -1) {
 				this.items.splice(index, 1);
 			}
-			
+
 			this.onInput(this.items);
 		},
 		scrollIntoView(item) {
@@ -207,7 +207,7 @@ export default {
 					// Deselect all other selected items.
 					this.selected = [];
 				}
-				
+
 				this.selectItem(item);
 			}
 		},
@@ -246,7 +246,7 @@ export default {
 	box-shadow: 0 0 0 2px rgba(66, 113, 174, .25);
 	outline: none;
 	position: relative; /* Prevent border to go underneath the other list */
-	
+
 	li.is-focused {
 		background-color: rgba(0, 0, 0, 0.075);
 	}
@@ -267,15 +267,15 @@ export default {
 	padding: 0.25em;
 	overflow: hidden;
 	user-select: none;
-	
+
 	> * {
 		margin: 0 0.25em;
-		
+
 		/* Workaround for a bug in IE 10: Inline elements are not treated as flex-items */
 		/* https://github.com/philipwalton/flexbugs#12-inline-elements-are-not-treated-as-flex-items */
 		display: block;
 	}
-	
+
 	&[aria-hidden="true"] {
 		display: none;
 	}
@@ -316,7 +316,7 @@ export default {
 	figure {
 		vertical-align: bottom;
 	}
-	
+
 	&:not([disabled]) {
 		cursor: pointer;
 	}
@@ -327,15 +327,15 @@ export default {
 	li {
 		cursor: pointer;
 	}
-	
+
 	li[aria-selected="true"] {
 		color: #777;
-		
+
 		.relationship-item-thumb {
 			opacity: 0.2;
 			filter: grayscale(100%);
 		}
-		
+
 		button {
 			display: none;
 		}
@@ -360,7 +360,7 @@ export default {
 	background-color: rgba(0, 0, 0, 0.025);
 	box-shadow: none;
 	cursor: -webkit-grabbing;
-	
+
 	> * {
 		opacity: 0;
 	}

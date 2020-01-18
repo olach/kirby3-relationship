@@ -3,7 +3,7 @@
 		<div class="relationship-search" v-if="search">
 			<k-input v-model="query" theme="field" type="text" spellcheck="false" icon="search" />
 		</div>
-		
+
 		<div class="relationship-lists">
 			<relationship-listbox
 				class="relationship-list"
@@ -79,7 +79,7 @@ export default {
 			if (this.value === null || this.disabled || this.counter === false) {
 				return false;
 			}
-			
+
 			return {
 				count: this.value && Array.isArray(this.value) ? this.value.length : 0,
 				min: this.min,
@@ -100,7 +100,7 @@ export default {
 	mounted() {
 		console.log(this.value);
 //		this.onInvalid();
-//		
+//
 //		if (this.$props.autofocus) {
 //			this.focus();
 //		}

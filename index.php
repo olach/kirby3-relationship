@@ -5,13 +5,13 @@ Kirby::plugin('olach/relationship', [
 		'relationship' => [
 			'extends' => 'tags',
 			'props' => [
-				
+
 				/**
 				 * Unset inherited props
 				 */
 				'accept' => null,
 				'icon' => null,
-				
+
 				/**
 				 * Enable/disable the search in the dropdown
 				 */
