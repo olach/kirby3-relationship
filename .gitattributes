@@ -2,6 +2,9 @@
 .gitattributes export-ignore
 .gitignore export-ignore
 
+# EditorConfig
+.editorconfig export-ignore
+
 # NPM
 package.json export-ignore
 package-lock.json export-ignore
