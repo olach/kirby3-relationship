@@ -269,10 +269,6 @@ export default {
 
 	> * {
 		margin: 0 0.25rem;
-
-		/* Workaround for a bug in IE 10: Inline elements are not treated as flex-items */
-		/* https://github.com/philipwalton/flexbugs#12-inline-elements-are-not-treated-as-flex-items */
-		display: block;
 	}
 
 	&[aria-hidden="true"] {
