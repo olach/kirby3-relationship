@@ -332,7 +332,7 @@ export default {
 		}
 
 		button {
-			display: none;
+			visibility: hidden;
 		}
 	}
 }
