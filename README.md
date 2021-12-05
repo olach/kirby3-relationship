@@ -1,5 +1,7 @@
 # Kirby 3 Relationship field
 
+[![Latest version](https://img.shields.io/github/release/olach/kirby3-relationship.svg?maxAge=1800)](https://github.com/olach/kirby3-relationship/releases/latest) [![License](https://img.shields.io/badge/License-MIT-green.svg)](http://www.opensource.org/licenses/mit-license.php) [![Required Kirby version](https://img.shields.io/badge/Kirby-3.x-red.svg)](https://getkirby.com)
+
 The Relationship field allows you to select and sort multiple items from a list.
 
 The field was originally created for Kirby 2, where a native multiselect field was not available at the time. With Kirby 3, a built in multiselect field was added, and this field was not really needed anymore. But some people liked the different ui this field provided so it was updated to support Kirby 3.
