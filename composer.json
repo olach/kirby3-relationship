@@ -1,6 +1,7 @@
 {
 	"name": "olach/relationship",
 	"description": "Sortable multiselect field for Kirby 3 CMS",
+	"version": "1.0.1",
 	"type": "kirby-plugin",
 	"license": "MIT",
 	"authors": [
