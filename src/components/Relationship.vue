@@ -126,7 +126,7 @@ export default {
 .relationship-lists {
 	display: flex;
 	flex-wrap: wrap;
-	border: 1px solid #ccc;
+	border: 1px solid var(--color-border, #ccc);
 }
 
 .relationship-lists:not(:first-child) {
@@ -138,7 +138,7 @@ export default {
 }
 
 .relationship-lists > :first-child {
-	background-color: #f7f7f7;
+	background-color: var(--color-gray-100, #f7f7f7);
 }
 
 .relationship-search {

@@ -228,34 +228,33 @@ export default {
 
 <style lang="scss">
 .relationship-list {
-	flex: 1 0 14em;
+	flex: 1 0 14rem;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
-	height: 11.25em;
+	height: 11.25rem;
 	margin: 0;
-	padding: 0.5em;
-	border: 1px solid #ccc;
-	background-color: white;
+	padding: var(--field-input-padding, 0.5rem);
+	border: 1px solid var(--color-border, #ccc);
+	background-color: var(--color-white, white);
 	list-style: none;
 }
 
 /* List in focus: */
 .relationship-list:focus {
-	border-color: #4271ae;
-	box-shadow: 0 0 0 2px rgba(66, 113, 174, .25);
-	outline: none;
+	border-color: var(--color-focus, #4271ae);
+	outline: var(--field-input-focus-outline, 2px solid rgba(113, 143, 183, .25));
 	position: relative; /* Prevent border to go underneath the other list */
 
 	li.is-focused {
-		background-color: rgba(0, 0, 0, 0.075);
+		background-color: var(--color-gray-300, #ddd);
 	}
 }
 
 /* Readonly state for the lists: */
 .relationship-list[aria-readonly="true"] {
-	color: #777;
-	background-color: transparent;
+	color: var(--field-input-disabled-color, #999);
+	background-color: var(--field-input-disabled-background, white);
 	filter: grayscale(100%);
 	pointer-events: none;
 }
@@ -264,12 +263,12 @@ export default {
 .relationship-item {
 	display: flex;
 	align-items: center;
-	padding: 0.25em;
+	padding: 0.25rem;
 	overflow: hidden;
 	user-select: none;
 
 	> * {
-		margin: 0 0.25em;
+		margin: 0 0.25rem;
 
 		/* Workaround for a bug in IE 10: Inline elements are not treated as flex-items */
 		/* https://github.com/philipwalton/flexbugs#12-inline-elements-are-not-treated-as-flex-items */
@@ -329,7 +328,7 @@ export default {
 	}
 
 	li[aria-selected="true"] {
-		color: #777;
+		color: var(--color-text-light, #777);
 
 		.relationship-item-thumb {
 			opacity: 0.2;
@@ -350,14 +349,14 @@ export default {
 /* List item during sorting: */
 .relationship-list[data-sortable="true"]:focus li[aria-selected="true"],
 .relationship-item.k-sortable-fallback {
-	background-color: white;
-	border-radius: 2px;
+	background-color: var(--color-white, white);
+	border-radius: var(--rounded-sm, 0.125rem);
 	box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Placeholder item when sorting: */
 .relationship-item.k-sortable-ghost {
-	background-color: rgba(0, 0, 0, 0.025);
+	background-color: var(--color-gray-300, #ddd);
 	box-shadow: none;
 	cursor: -webkit-grabbing;
 
