@@ -98,7 +98,7 @@ export default {
 		}
 	},
 	mounted() {
-		console.log(this.value);
+//		console.log(this.value);
 //		this.onInvalid();
 //
 //		if (this.$props.autofocus) {
