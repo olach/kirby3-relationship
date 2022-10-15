@@ -126,7 +126,7 @@ export default {
 .relationship-lists {
 	display: flex;
 	flex-wrap: wrap;
-	border: 1px solid var(--color-border, #ccc);
+	border: var(--field-input-border, 1px solid #ccc);
 }
 
 .relationship-lists:not(:first-child) {

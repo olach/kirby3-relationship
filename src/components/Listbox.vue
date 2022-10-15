@@ -235,7 +235,7 @@ export default {
 	height: 11.25rem;
 	margin: 0;
 	padding: var(--field-input-padding, 0.5rem);
-	border: 1px solid var(--color-border, #ccc);
+	border: var(--field-input-border, 1px solid #ccc);
 	background-color: var(--color-white, white);
 	list-style: none;
 	outline: 0;
