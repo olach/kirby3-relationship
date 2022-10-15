@@ -220,7 +220,6 @@ export default {
 
 <style lang="scss">
 .relationship-list {
-	flex: 1 0 14rem;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
@@ -236,7 +235,7 @@ export default {
 /* List in focus: */
 .relationship-list:focus {
 	position: relative; /* Prevent border to go underneath the other list */
-	border-radius: var(--rounded);
+	border-radius: var(--rounded) !important;
 	border: var(--field-input-focus-border, 1px solid #4271ae);
 	box-shadow: var(--color-focus-outline, rgba(113, 143, 183, .25)) 0 0 0 2px;
 

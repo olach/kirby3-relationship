@@ -1,27 +1,29 @@
 <template>
 	<k-field class="kirby-relationship-field" v-bind="$props" :counter="counterOptions">
-		<div class="relationship-search" v-if="search">
-			<k-input v-model="query" theme="field" type="text" spellcheck="false" icon="search" />
-		</div>
+		<div class="relationship-container">
+			<div class="relationship-search" v-if="search">
+				<k-input v-model="query" theme="field" type="text" spellcheck="false" icon="search" />
+			</div>
 
-		<div class="relationship-lists">
-			<relationship-listbox
-				class="relationship-list"
-				:items="filteredOptions"
-				:selected="selected"
-				:multiselectable="true"
-				:sortable="false"
-				:deletable="false"
-				v-on:input="onInput"
-			/>
-			<relationship-listbox
-				class="relationship-list"
-				:items="selected"
-				:multiselectable="false"
-				:sortable="true"
-				:deletable="true"
-				v-on:input="onInput"
-			/>
+			<div class="relationship-lists">
+				<relationship-listbox
+					class="relationship-list"
+					:items="filteredOptions"
+					:selected="selected"
+					:multiselectable="true"
+					:sortable="false"
+					:deletable="false"
+					v-on:input="onInput"
+				/>
+				<relationship-listbox
+					class="relationship-list"
+					:items="selected"
+					:multiselectable="false"
+					:sortable="true"
+					:deletable="true"
+					v-on:input="onInput"
+				/>
+			</div>
 		</div>
 	</k-field>
 </template>
@@ -127,15 +129,56 @@ export default {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 1px;
-	border: var(--field-input-border, 1px solid #ccc);
+	border: 1px solid transparent;
 }
 
 .relationship-lists:not(:first-child) {
 	margin-top: -1px; /* Prevent double borders */
 }
 
-.relationship-lists > .relationship-list {
+.relationship-lists > * {
 	margin: -1px; /* Prevent double borders */
+	flex: 1 0 14rem; /* Fallback if container queries is not supported */
+}
+
+@supports (container-type: inline-size) {
+	.relationship-container {
+		container-type: inline-size;
+	}
+
+	.relationship-lists > * {
+		flex-basis: 100cqw; /* Stack lists vertically */
+	}
+
+	.relationship-lists:first-child > :first-child {
+		border-radius: var(--rounded) var(--rounded) 0 0;
+	}
+
+	.relationship-lists:first-child > :last-child {
+		border-radius: 0 0 var(--rounded) var(--rounded);
+	}
+
+	@container (min-width: 28rem) {
+		.relationship-lists > * {
+			flex: 1; /* Stack lists horizontally */
+		}
+
+		.relationship-lists:first-child > :first-child {
+			border-radius: var(--rounded) 0 0 var(--rounded);
+		}
+
+		.relationship-lists:first-child > :last-child {
+			border-radius: 0 var(--rounded) var(--rounded) 0;
+		}
+
+		.relationship-lists:not(:first-child) > :first-child {
+			border-top-left-radius: 0;
+		}
+
+		.relationship-lists:not(:first-child) > :last-child {
+			border-top-right-radius: 0;
+		}
+	}
 }
 
 .relationship-lists > :first-child {
