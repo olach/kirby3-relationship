@@ -109,22 +109,17 @@ export default {
 			}
 		},
 		getIndex(testitem) {
-			// todo: findIndex has no IE support. Change?
 			return this.items.findIndex(item => item.value === testitem.value);
 		},
 		isFocused(item) {
 			return item === this.focused;
 		},
 		isSelected(item) {
-			// todo: Use findIndex instead:
-			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
-			for (var i = 0; i < this.selected.length; i++) {
-				if (this.selected[i].value === item.value) {
-					return true;
-				}
-			}
+			const found = this.selected.find(current => current.value === item.value);
 
-			return false;
+			if (!found) return false;
+
+			return true;
 		},
 		moveDown(item) {
 			var itemPos = this.getIndex(item);
@@ -188,7 +183,7 @@ export default {
 			this.onInput(this.items);
 		},
 		scrollIntoView(item) {
-			// todo
+			// TODO: Scroll new item into view
 		},
 		selectItem(item) {
 			this.selected.push(item);
@@ -212,15 +207,12 @@ export default {
 			}
 		},
 		unselectItem(item) {
-			// todo: Use findIndex instead:
-			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
-			for (var i = 0; i < this.selected.length; i++) {
-				if (this.selected[i].value === item.value) {
-					this.selected.splice(i, 1);
-					this.onInput(this.items);
-					return;
-				}
-			}
+			const index = this.selected.findIndex(current => current.value === item.value);
+
+			if (index === -1) return;
+
+			this.selected.splice(index, 1);
+			this.onInput(this.items);
 		}
 	}
 }
