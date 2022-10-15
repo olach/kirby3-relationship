@@ -232,7 +232,7 @@ export default {
 	overflow-x: hidden;
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
-	height: 11.25rem;
+	height: 11.75rem;
 	margin: 0;
 	padding: var(--field-input-padding, 0.5rem);
 	border: var(--field-input-border, 1px solid #ccc);
