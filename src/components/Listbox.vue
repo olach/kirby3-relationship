@@ -301,20 +301,7 @@ export default {
 	cursor: -webkit-grabbing;
 }
 
-.relationship-item-thumb {
-	width: 1.375em;
-	height: 1.375em;
-	margin-top: -0.1875em;
-	margin-bottom: -0.1875em;
-	object-fit: cover;
-	border-radius: 12%;
-}
-
 .relationship-item button {
-	figure {
-		vertical-align: bottom;
-	}
-
 	&:not([disabled]) {
 		cursor: pointer;
 	}
@@ -328,11 +315,6 @@ export default {
 
 	li[aria-selected="true"] {
 		color: var(--color-text-light, #777);
-
-		.relationship-item-thumb {
-			opacity: 0.2;
-			filter: grayscale(100%);
-		}
 
 		button {
 			visibility: hidden;
