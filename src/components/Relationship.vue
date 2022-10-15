@@ -145,6 +145,11 @@ export default {
 	position: relative; /* Prevent border to go underneath the other list when focused */
 }
 
+.relationship-search .k-input:not(:focus-within) {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
 .relationship-search .k-input-element {
 	order: 1; /* Place input after icon */
 }
