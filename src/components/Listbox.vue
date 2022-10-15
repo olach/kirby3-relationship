@@ -290,7 +290,7 @@ export default {
 	opacity: 0.25;
 	will-change: opacity;
 	transition: opacity 0.3s;
-	cursor: -webkit-grab;
+	cursor: grab;
 }
 
 .relationship-item:hover .relationship-item-sort {
@@ -298,7 +298,7 @@ export default {
 }
 
 .relationship-item-sort:active {
-	cursor: -webkit-grabbing;
+	cursor: grabbing;
 }
 
 .relationship-item button {
@@ -339,7 +339,7 @@ export default {
 .relationship-item.k-sortable-ghost {
 	background-color: var(--color-gray-300, #ddd);
 	box-shadow: none;
-	cursor: -webkit-grabbing;
+	cursor: grabbing;
 
 	> * {
 		opacity: 0;
