@@ -126,6 +126,7 @@ export default {
 .relationship-lists {
 	display: flex;
 	flex-wrap: wrap;
+	gap: 1px;
 	border: var(--field-input-border, 1px solid #ccc);
 }
 
