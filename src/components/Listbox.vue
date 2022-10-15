@@ -238,16 +238,19 @@ export default {
 	border: 1px solid var(--color-border, #ccc);
 	background-color: var(--color-white, white);
 	list-style: none;
+	outline: 0;
 }
 
 /* List in focus: */
 .relationship-list:focus {
-	border-color: var(--color-focus, #4271ae);
-	outline: var(--field-input-focus-outline, 2px solid rgba(113, 143, 183, .25));
 	position: relative; /* Prevent border to go underneath the other list */
+	border-radius: var(--rounded);
+	border: var(--field-input-focus-border, 1px solid #4271ae);
+	box-shadow: var(--color-focus-outline, rgba(113, 143, 183, .25)) 0 0 0 2px;
 
 	li.is-focused {
 		background-color: var(--color-gray-300, #ddd);
+		border-radius: var(--rounded-sm);
 	}
 }
 
